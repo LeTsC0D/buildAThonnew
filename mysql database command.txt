@@ -1,0 +1,24 @@
+mysql> create database BuildAThon;
+mysql> use BuildAThon;
+mysql> create table login(Id int AUTO_INCREMENT,Username varchar(255),Password v
+archar(255),Role varchar(255),PRIMARY KEY(Id));
+mysql> create table user(Id int AUTO_INCREMENT,Username varchar(255),lastactivit
+y varchar(255),Lastlogin TIMESTAMP,PRIMARY KEY(Id));
+mysql> create table scorebased(Id int AUTO_INCREMENT,nooftransaction int,monthly
+achievement int,userid int,PRIMARY KEY(Id));
+mysql> create table timebased(Id int AUTO_INCREMENT,assessmentTimeline TIMESTAMP
+,dailyupdateTimeline varchar(255),userid int,PRIMARY KEY(Id));
+mysql> create table eventbased(Id int AUTO_INCREMENT,eventTimeline TIMESTAMP,userid int,PRI
+MARY KEY(Id));
+mysql> create table statusbased(Id int AUTO_INCREMENT,ActiveInactive varchar(255
+),userid int,PRIMARY KEY(Id));
+mysql> create table participation(Id int AUTO_INCREMENT,activityName varchar(255
+),decision varchar(255),userid int,PRIMARY KEY(Id));
+mysql> create table randomtrigger(Id int AUTO_INCREMENT,userid int,PRIMARY KEY(I
+d));
+mysql> create table rolebased(Id int AUTO_INCREMENT,roleName varchar(255),userid
+ int,PRIMARY KEY(Id));
+mysql> create table notification(Id int AUTO_INCREMENT,userid int,notificationty
+pe varchar(255),time TIMESTAMP,PRIMARY KEY(Id));
+
+
