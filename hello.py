@@ -81,76 +81,77 @@ def user(id):
     #select * from user where Id = id
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("select * from user where Id = " + id )
+    cursor.execute("select * from user where id = " + id )
     data = cursor.fetchone()
     print(data)
     Username=data[1]
     #retrieve all notification from database and send
     #create notification based on rules
-    cursor.execute("select * from scorebased where Id = " + id )
+    cursor.execute("select * from scorebased where userid = " + id )
     data = cursor.fetchone()
     if data != None:
         #create notification based on scorebased
         if data[1]<0.05*data[2]:
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'red','"+now()+")")
+            cursor.execute("insert into notification values('dafault','"+id+"','"+"'red','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+")")
         elif data[1]>0.05*data[2] and data[1]<0.08*data[2]:
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'amber','"+now()+")")
+            cursor.execute("insert into notification values('dafault','"+id+"','"+"'amber','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+")")
         else:
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'green','"+now()+")")
-
+            cursor.execute("insert into notification values('dafault','"+id+"','"+"'green','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+")")
+        conn.commit()
     #create notification based on time based notification
     #in 2 hour we have 120 min to set up notification
-    cursor.execute("select * from timebased where Id="+id)
+    cursor.execute("select * from timebased where userid="+id)
     data = cursor.fetchone()
     if data != None:
         if datetime.now()-data[1]<120:
             #create notification for daily assessmenttimeline
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Alert for assessmenttimeline','"+now()+")")
+            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Alert for assessmenttimeline','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+")")
         elif datetime.now()-data[1]<60:
             #create notification for daily dailyupdateTimeline
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Alert for dailyupdateTimeline','"+now()+")")
-
+            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Alert for dailyupdateTimeline','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+")")
+        conn.commit()
     #create notification based on event based notification before 2 days
     #in 2 days we have 2880 min to set up notification
-    cursor.execute("select * from eventbased where Id="+id)
+    cursor.execute("select * from eventbased where userid="+id)
     data = cursor.fetchone()
     if data != None:
         if datetime.now()-data[1]<2880:
             #create notification for daily assessmenttimeline
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Alert for event ','"+now()+")")
-
+            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Alert for event ','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+")")
+            conn.commit()
     #create notification based on participation
-    cursor.execute("select * from participation where Id="+id)
+    cursor.execute("select * from participation where userid="+id)
     data = cursor.fetchone()
     if data != None:
         if data[2]=="NO":
             #create notification for daily assessmenttimeline
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'not yet participated','"+now()+")")
-
+            cursor.execute("insert into notification values('dafault','"+id+"','"+"'not yet participated','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+")")
+            conn.commit()
     #create notification based on rolebased
-    cursor.execute("select * from rolebased where Id="+id)
+    cursor.execute("select * from rolebased where userid="+id)
     data = cursor.fetchone()
     if data != None:
-        if data[1]=="MANAGER":
+        if data[1]=="Manager":
             #create notification for daily assessmenttimeline
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Hello manager how are you','"+now()+")")
-        elif data[1]=="EMPLOYEE":
+            cursor.execute("insert into notification values(default,"+str(id)+",'Hello manager how are you','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+"')")
+        elif data[1]=="Employee":
             #create notification for daily assessmenttimeline
-            cursor.execute("insert into notification values('dafault','"+id+"','"+"'Hello employee how are you','"+now()+")")
+            cursor.execute("insert into notification values(default,"+str(id)+",'Hello employee how are you','"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+"')")
+        conn.commit()
+    # select * from  notification where Id=id
+    cursor.execute("select * from  notification where userid=" +id+" order by time desc")
+    data = cursor.fetchall()
+    notifications={}
+    if data != None:
+        for ele in data:
+            notifications[ele[1]]=str(ele[2])
 
-    #select * from  notification where Id=id
-    # cursor.execute("select * from  notification where Id=" +id+"order by time desc")
-    # data = cursor.fetchone()
-    # if data != None:
-    #     notifications={}
-    #     for ele in data:
-    #         notifications[data[0]]=data[3]
-
-    # # updatethe time of login of user in user table
-    # cursor.execute("update user set Lastlogin="+str(datetime.now())+" where Id = "+id)
-
+    # updatethe time of login of user in user table
+    cursor.execute("update user set Lastlogin='"+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+"' where id = "+id)
+    conn.commit()
     # return redirect(url_for("user"))
-    return render_template("user.html",id=id,Username=Username)
+    print("\n\n notification\n\n",notifications)
+    return render_template("user.html",id=id,Username=Username,notifications=notifications)
 
 
 @app.route('/admin/<string:id>', methods=['GET'])

@@ -14,69 +14,42 @@
 
       <link href="../static/css/signup.css" rel="stylesheet">
       <script src="../static/js/jquery-1.11.2.js"></script>
-      <!-- <script src="../static/js/signUp.js"></script> -->
-
-      <script>
-      function add() {
-
-          // Add li element
-          var node = document
-          .createElement("li");
-
-          // Add element into the list
-          var textnode = document
-          .createTextNode("JS");
-
-          // Append the element into the list
-          node.appendChild(textnode);
-          document.getElementById("myList")
-          .appendChild(node);
-
-          // Alert message when element gets added
-          alert("Element is getting added") ;
-      }
-  </script>
 
     </head>
-
-  <!-- </head> -->
 
   <body>
 
     <div class="container">
 
-      <div class="header">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-       	    <li role="presentation"><a href="/login">Log Out</a></li>
-          </ul>
-        </nav>
-      </div>
-
       <div class="jumbotron">
         <!-- <ul id="notificationlist"></ul>
         </ul> -->
-        <div id = "dvContainer"></div>
+        <label for="html">Notification </label><br>
+        <div id = "dvContainer">
         <script type="text/javascript">
-        function addNotifications(){
-          var ddlCustomers = document.createElement("ul");
-          ddlCustomers.name = "notification";
-          ddlCustomers.id = "notification"
+        // function addNotifications(){
+          // alert("notify")
+          var ddlCustomers = document.createElement("SELECT");
+          ddlCustomers.name = "users";
+          ddlCustomers.id = "users"
           //Add the Options to the DropDownList.
-          for (var i = 0; i < notifications.length; i++) {
-              var option = document.createElement("li");
+          {% for key, value in notifications.items() %}
+          // for (var i = 0; i < notifications.length; i++) {
+          // console.log({{key}})
+          // console.log({{value}})
+          //    <th> {{ key }} </th>
+             // <td> {{ value }} </td>
 
-              //Set Customer Name in Text part.
-              option.innerHTML = notifications[i][0];
+          var option = document.createElement("OPTION");
+          //Set Customer Name in Text part.
+          option.innerHTML = {{key}};
+          //Set CustomerId in Value part.
+          option.value ={{key}};
+          //Add the Option element to DropDownList.
+          ddlCustomers.options.add(option);
 
-              //Set CustomerId in Value part.
-              // option.value = notificationid[i][0];
-              option.setAttribute('id',notifications[i][0]);
-              option.appendChild(document.createTextNode(notifications[i][0]));
-              // ul.appendChild(li);
-              //Add the Option element to DropDownList.
-              ddlCustomers.appendChild(option);
-          }
+          {% endfor %}
+          // }
 
           //Reference the container DIV.
           var dvContainer = document.getElementById("dvContainer")
@@ -87,23 +60,24 @@
 
           //Add the DIV to the container DIV.
           dvContainer.appendChild(div);
-        }
+        // }
 
         </script>
+        </div>
 
         <!-- <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">see all notification</button> -->
 
-        <button onclick="addNotifications()">
+        <!-- <button onclick="addNotifications()">
             Notifications
-        </button>
+        </button> -->
 
       </div>
 
       <div class="jumbotron">
         <h1>User Details</h1>
         <!-- <form class="form-signin"> -->
-        <label for="inputName" class="sr-only">Name</label>
-        <input type="name" name="inputName" id="inputName" class="form-control" value={{UserName}} disabled required autofocus>
+        <label for="html">Username and Userid</label><br>
+        <input type="name" name="inputName" id="inputName" class="form-control" value={{Username}} disabled required autofocus>
         <input type="name" name="userid" id="userid" class="form-control" value={{id}} disabled required autofocus>
 
         <!-- <label for="inputPassword" class="sr-only">Password</label>
