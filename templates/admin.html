@@ -15,21 +15,20 @@
       <link href="../static/css/signup.css" rel="stylesheet">
       <script src="../static/js/jquery-1.11.2.js"></script>
       <script src="../static/js/signUp.js"></script>
-
+      <style>
+      div {
+        /* border: 1px solid black; */
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 150px;
+        margin-left: 80px;
+        background-color: lightblue;
+        font-family: "Times New Roman", Times, serif;
+        color:MediumSeaGreen;
+      }
+      </style>
       <script type="text/javascript">
-      // window.onload = function(){
-      // document.getElementById('nooftransaction').style.visibility = 'hidden';
-      // document.getElementById('monthlyachievement').style.visibility = 'hidden';
-      // document.getElementById('eventTimeline').style.visibility = 'hidden';
-      // document.getElementById('activityName').style.visibility = 'hidden';
-      // document.getElementById('roleName').style.visibility = 'hidden';
-      // document.getElementById('activeinactive').style.visibility = 'hidden';
-      // document.getElementById('assessmenttimeline').style.visibility = 'hidden';
-      // document.getElementById('dailyupdatetimeline').style.visibility = 'hidden';
-      // }
-      // for (const [key, value] of Object.entries(userid)) {
-      // console.log(key, value);
-      // }
+
 
       function add() {
 
@@ -55,10 +54,15 @@
         document.getElementById('monthlyachievement').style.visibility = 'hidden';
         document.getElementById('eventTimeline').style.visibility = 'hidden';
         document.getElementById('activityName').style.visibility = 'hidden';
+        document.getElementById('decision').style.visibility = 'hidden';
+
         document.getElementById('roleName').style.visibility = 'hidden';
         document.getElementById('activeinactive').style.visibility = 'hidden';
         document.getElementById('assessmenttimeline').style.visibility = 'hidden';
         document.getElementById('dailyupdatetimeline').style.visibility = 'hidden';
+        // if {{status}}!=Null{
+        //     alert({{status}})
+        // }
 
       }
 
@@ -85,7 +89,7 @@
         }
         else if(value=="randomtrigger"){
           setithidden()
-          document.getElementById('randomtrigger').style.visibility = 'visible';
+          // document.getElementById('randomtrigger').style.visibility = 'visible';
         }
         else if(value=="rolebased"){
           setithidden()
@@ -109,94 +113,40 @@
   <body onload="setithidden()" >
 
     <div class="container">
-      <div class="header">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="/login">Log Out</a></li>
-          </ul>
-        </nav>
-      </div>
-
-      <!-- <div class="jumbotron">
-        <ul id="myList">
-
-        </ul>
-
-        <button onclick="add()">
-            Notifications
-        </button> -->
-      </div>
-
-      <!-- <div class="jumbotron">
-        <h1>Admin Details</h1>
-        <label for="inputName" class="sr-only">Name</label>
-        <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" disabled required autofocus>
-
-      </div> -->
-
-      <!-- <div class="jumbotron">
-        <h1>Create Trigger</h1>
-        <label for="cars">Choose a Trigger:</label>
-
-        <select name="Trigger type" id="createtrigger">
-          <option value="Score based">Score based</option>
-          <option value="Time based">Time based</option>
-          <option value="Event Based">Event Based</option>
-          <option value="User status">User status</option>
-          <option value="Participation level">Participation level</option>
-          <option value="Random trigger">Random trigger</option>
-          <option value="Role based">Role based</option>
-        </select>
-
-        <div class="jumbotron" id=details_createTrigger>
-          <h1>User Details</h1>
-          <label for="inputName" class="sr-only">Name</label>
-          <input type="name" name="triggerdetail" id="triggerdetail" class="form-control" placeholder="triggerdetails" disabled required autofocus>
-        </div>
-      </div> -->
 
       <div class="jumbotron">
         <h1>create Trigger</h1>
         <form class="form-signin">
-        <input type="name" name="adminid" id="adminid" class="form-control" value={{id}} disabled required autofocus>
-
+        <label for="html">AdminId</label><br>
+        <input type="name" name="adminid" id="adminid" class="form-control" value={{id}} disable required autofocus>
         <label for="cars">Choose a Trigger:</label>
 
-        <div id = "dvContainer"></div>
-        <script type="text/javascript">
-            var ddlCustomers = document.createElement("SELECT");
-            ddlCustomers.name = "users";
-            ddlCustomers.id = "users"
-            //Add the Options to the DropDownList.
-            for (var i = 0; i < userid.length; i++) {
-                var option = document.createElement("OPTION");
-
-                //Set Customer Name in Text part.
-                option.innerHTML = userid[i][1];
-
-                //Set CustomerId in Value part.
-                option.value = userid[i][1];
-
-                //Add the Option element to DropDownList.
-                ddlCustomers.options.add(option);
-            }
-
-            //Reference the container DIV.
-            var dvContainer = document.getElementById("dvContainer")
-
-            //Add the DropDownList to DIV.
-            var div = document.createElement("DIV");
-            div.appendChild(ddlCustomers);
-
-            //Add the DIV to the container DIV.
-            dvContainer.appendChild(div);
-        </script>
-
-        <!-- <select name="userid" id="userid" >
-
-        </select> -->
-
-        <select name="Triggertype" id="trigger" onchange="setitasrequired()">
+        <div id ="dvContainer">
+          <script type="text/javascript">
+          var ddlCustomers = document.createElement("SELECT");
+          ddlCustomers.name = "users";
+          ddlCustomers.id = "users"
+          {% for item in userid %}
+          var option = document.createElement("OPTION");
+          //Set Customer Name in Text part.
+          option.innerHTML = {{item}};
+          //Set CustomerId in Value part.
+          option.value ={{item}};
+          //Add the Option element to DropDownList.
+          ddlCustomers.options.add(option);
+          console.log({{item}})
+          {% endfor %}
+          //Reference the container DIV.
+          var dvContainer = document.getElementById("dvContainer")
+          //Add the DropDownList to DIV.
+          var div = document.createElement("DIV");
+          div.appendChild(ddlCustomers);
+          //Add the DIV to the container DIV.
+          dvContainer.appendChild(div);
+          </script>
+        </div>
+        <select name="trigger" id="trigger" onchange="setitasrequired()">
+          <option value="select">Select</option>
           <option value="scorebased">Score based</option>
           <option value="eventbased">Event Based</option>
           <option value="statusbased">Status Based</option>
@@ -205,29 +155,15 @@
           <option value="rolebased">Role based</option>
           <option value="timebased">Time based</option>
         </select>
-        <input type="name" name="nooftransaction" id="nooftransaction" class="form-control" placeholder="nooftransaction" required autofocus>
-        <input type="name" name="monthlyachievement" id="monthlyachievement" class="form-control" placeholder="monthlyachievement" required autofocus>
-        <input type="name" name="eventTimeline" id="eventTimeline" class="form-control" placeholder="eventTimeline" required autofocus>
-        <input type="name" name="activeinactive" id="activeinactive" class="form-control" placeholder="activeinactive" required autofocus>
-        <input type="name" name="activityName" id="activityName" class="form-control" placeholder="activityName" required autofocus>
-        <input type="name" name="roleName" id="roleName" class="form-control" placeholder="roleName" required autofocus>
-        <input type="name" name="assessmenttimeline" id="assessmenttimeline" class="form-control" placeholder="assessmenttimeline" required autofocus>
-        <input type="name" name="dailyupdatetimeline" id="dailyupdatetimeline" class="form-control" placeholder="dailyupdatetimeline" required autofocus>
-
-        <!-- <label for="cars">Choose a Notification:</label>
-
-        <select name="NotificationType" id="notify">
-          <option value="Poke">Poke</option>
-          <option value="Pulse">Pulse</option>
-          <option value="Query">Query</option>
-          <option value="Alert">Alert</option>
-          <option value="Exchange">Exchange</option>
-          <option value="Prompt">Prompt</option>
-          <option value="Red Flag">Red Flag</option>
-          <option value="Rewards">Rewards</option>
-        </select> -->
-
-      </div>
+        <input type="name"  style="height: 10px;" name="nooftransaction" id="nooftransaction" class="form-control" placeholder="nooftransaction" required autofocus>
+        <input type="name"  style="height: 10px;" name="monthlyachievement" id="monthlyachievement" class="form-control" placeholder="monthlyachievement" required autofocus>
+        <input type="name"  style="height: 10px;" name="eventTimeline" id="eventTimeline" class="form-control" placeholder="3Y-m-d H:M:S.f" required autofocus>
+        <input type="name"  style="height: 10px;" name="activeinactive" id="activeinactive" class="form-control" placeholder="activeinactive" required autofocus>
+        <input type="name" style="height: 10px;" name="activityName" id="activityName" class="form-control" placeholder="activityName" required autofocus>
+        <input type="name" style="height: 10px;" name="decision" id="decision" class="form-control" placeholder="decision" required autofocus>
+        <input type="name" style="height: 10px;" name="roleName" id="roleName" class="form-control" placeholder="roleName" required autofocus>
+        <input type="name" style="height: 10px;" name="assessmenttimeline" id="assessmenttimeline" class="form-control" placeholder="1Y-m-d H:M:S.f" required autofocus>
+        <input type="name" style="height: 10px;" name="dailyupdatetimeline" id="dailyupdatetimeline" class="form-control" placeholder="2Y-m-d H:M:S.f" required autofocus>
 
       <button id="mapping" class="btn btn-lg btn-primary btn-block" type="button">create mapping</button>
       </form>
